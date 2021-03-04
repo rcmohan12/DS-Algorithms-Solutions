@@ -18,18 +18,26 @@ public class UnDirectedGraph {
         adjList.add(new Integer[]{2});
 
         int[] elements = breadthFirstSearch(adjList);
-
+        System.out.println("BFS");
         for(int x = 0; x < elements.length; x++) {
             System.out.print(" "+ elements[x]);
+        }
+
+        List<Integer> elements1 = depthFirstSearch(adjList,0, new ArrayList<Integer>(), new HashSet<Integer>());
+        System.out.println("");
+        System.out.println("DFS");
+
+        for(Integer i : elements1) {
+            System.out.print(" "+ i);
         }
 
     }
 
 
     /**
-     *
+     * Breadth first search starting from node 0
      * @param adjList : adjacency list for each element in the graph
-     * @return : elements ordered by bfs search
+     * @return : elements ordered by BFS
      */
     public static int[] breadthFirstSearch(List<Integer[]> adjList) {
         int[] res = new int[adjList.size()]; // contains the elements searched in bfs order
@@ -50,6 +58,28 @@ public class UnDirectedGraph {
             count++;
         }
         return res;
+    }
+
+    /**
+     * Depth first search starting from node 0. Impl with recursion
+     * @param adjList : adjacency list for each element in the graph
+     * @param index : index of node whose depth needs to be determined
+     * @param finl : list of elements ordered by DFS
+     * @param visited : nodes that have already been visited
+     * @return : finl
+     */
+    public static List<Integer> depthFirstSearch(List<Integer[]> adjList, int index, List<Integer> finl,  Set<Integer> visited) {
+
+        Integer[] adj = adjList.get(index);
+        visited.add(index);
+        finl.add(index);
+        for(Integer i : adj) {
+            if(!visited.contains(i)) {
+                finl =  depthFirstSearch(adjList, i, finl, visited);
+            }
+        }
+
+        return finl;
     }
 
 }

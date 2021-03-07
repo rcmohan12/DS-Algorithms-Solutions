@@ -36,6 +36,13 @@ public class UnDirectedGraph {
 
     /**
      * Breadth first search starting from node 0
+     * * * * * 1 * * 4 --------- 6
+     * * * * / * * / * * * * * * |
+     * * * 0 --- 3 ----- 5 * * * 7
+     * * * * * * / * * * * * * * *
+     * * * * * 2 ----- 8 * * * * *
+     * BFS order --> 0, 1, 3, 4, 5, 2, 6, 8, 7
+     *
      * @param adjList : adjacency list for each element in the graph
      * @return : elements ordered by BFS
      */
@@ -61,6 +68,15 @@ public class UnDirectedGraph {
     }
 
     /**
+     * Breadth first search starting from node 0
+     * * * * * 1 * * 4 --------- 6
+     * * * * / * * / * * * * * * |
+     * * * 0 --- 3 ----- 5 * * * 7
+     ** * * * * / * * * * * * * *
+     * * * * * 2 ----- 8 * * * * *
+     * DFS order --> 0, 1, 3, 4, 6, 7, 5, 2, 8
+     *
+     *
      * Depth first search starting from node 0. Impl with recursion
      * @param adjList : adjacency list for each element in the graph
      * @param index : index of node whose depth needs to be determined

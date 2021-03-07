@@ -69,7 +69,7 @@ public class InformEmployees {
         return adjList;
     };
 
-    public static int determineInformTime(List<Integer[]> adjList, int[] informTime, int index, Set<Integer> visited, Integer depthTime, int maxITime) {
+    public static int determineInformTime(List<Integer[]> adjList, int[] informTime, int index, Set<Integer> visited, int depthTime, int maxITime) {
         Integer[] adj = adjList.get(index);
         visited.add(index);
         depthTime = depthTime + informTime[index];

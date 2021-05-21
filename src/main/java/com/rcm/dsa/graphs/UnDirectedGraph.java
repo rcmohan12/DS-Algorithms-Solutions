@@ -49,6 +49,14 @@ public class UnDirectedGraph {
             System.out.print(" "+ i);
         }
 
+        List<Integer> elements2 = depthFirstSearchAdjacencyMatrix(adjMatrix,0, new ArrayList<Integer>(), new HashSet<Integer>());
+        System.out.println("");
+        System.out.println("DFS Adjacency Matrix");
+
+        for(Integer i : elements2) {
+            System.out.print(" "+ i);
+        }
+
     }
 
 
@@ -92,7 +100,7 @@ public class UnDirectedGraph {
      * * * 0 --- 3 ----- 5 * * * 7
      * * * * * * / * * * * * * * *
      * * * * * 2 ----- 8 * * * * *
-     * BFS order --> 0, 1, 3, 4, 5, 2, 6, 8, 7
+     * BFS order --> 0, 1, 3, 2, 4, 5, 8, 6, 7
      *
      * @param adjMatrix : adjacency matrix for each element in the graph
      * @return : elements ordered by BFS
@@ -132,7 +140,7 @@ public class UnDirectedGraph {
 
 
     /**
-     * Breadth first search starting from node 0
+     * Depth first search starting from node 0
      * * * * * 1 * * 4 --------- 6
      * * * * / * * / * * * * * * |
      * * * 0 --- 3 ----- 5 * * * 7
@@ -161,5 +169,38 @@ public class UnDirectedGraph {
 
         return finl;
     }
+
+    /**
+     * Depth first search starting from node 0
+     * * * * * 1 * * 4 --------- 6
+     * * * * / * * / * * * * * * |
+     * * * 0 --- 3 ----- 5 * * * 7
+     ** * * * * / * * * * * * * *
+     * * * * * 2 ----- 8 * * * * *
+     * DFS order --> 0, 1, 3, 2, 8, 4, 6, 7, 5
+     *
+     *
+     * Depth first search starting from node 0. Impl with recursion
+     * @param adjMatrix : adjacency matrix for each element in the graph
+     * @param index : index of node whose depth needs to be determined
+     * @param finl : list of elements ordered by DFS
+     * @param visited : nodes that have already been visited
+     * @return : finl
+     */
+    public static List<Integer> depthFirstSearchAdjacencyMatrix(int[][] adjMatrix, int index, List<Integer> finl,  Set<Integer> visited) {
+
+        int[] adj = adjMatrix[index];
+        visited.add(index);
+        finl.add(index);
+        for(int x = 0; x < adj.length; x++) {
+            System.out.println("i ----->"+adj[x]);
+            if(adj[x] == 1 && !visited.contains(x)) {
+                finl =  depthFirstSearchAdjacencyMatrix(adjMatrix, x, finl, visited);
+            }
+        }
+
+        return finl;
+    }
+
 
 }

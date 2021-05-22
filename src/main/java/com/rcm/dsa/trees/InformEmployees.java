@@ -28,18 +28,10 @@ public class InformEmployees {
      * the max time taken to inform all employees.
      * @param args
      */
+
+    static int manager = 0;
     public static void main(String[] args) {
-      /*  List<Integer[]> adjList = returnAdjacencyList(new int[]{2, 2, 4, 6, -1, 4, 4, 5});
-        for(int x = 0; x < adjList.size(); x++) {
-            if(adjList.get(x) != null) {
-                System.out.println("");
-                System.out.print(x + " : [");
-                for(int y = 0; y < adjList.get(x).length; y++) {
-                    System.out.print(y + " ");
-                }
-                System.out.print("]");
-            }
-        }*/
+        List<Integer[]> adjList = returnAdjacencyList(new int[]{2, 2, 4, 6, -1, 4, 4, 5});
 
         List<Integer[]> adjList1 = new ArrayList<>();
         adjList1.add(null);
@@ -53,7 +45,7 @@ public class InformEmployees {
         adjList1.add(null);
 
 
-        int maxITime = determineInformTime(adjList1, new int[]{0, 0, 4, 0, 7, 3, 6, 8, 0}, 4, new HashSet<Integer>(), 0, 0);
+        int maxITime = determineInformTime(adjList, new int[]{0, 0, 4, 0, 7, 3, 6, 8, 0}, manager, new HashSet<Integer>(), 0, 0);
         System.out.println("Depth time :"+maxITime);
     }
 
@@ -71,20 +63,29 @@ public class InformEmployees {
         List<Integer[]> adjList = new ArrayList<>();
 
         for(int x = 0; x < managers.length; x++) {
-            tmpList = adjMap.getOrDefault(managers[x], new ArrayList<Integer>());
+            if(adjMap.containsKey(managers[x])) {
+                tmpList = adjMap.get(managers[x]);
+            } else {
+                tmpList = adjMap.getOrDefault(managers[x], new ArrayList<Integer>());
+            }
             tmpList.add(x);
             adjMap.put(managers[x], tmpList);
-        }
-
-        for(Map.Entry<Integer, List<Integer>> entry : adjMap.entrySet()) {
-            if(adjList.get(entry.getKey()) == null) {
-
+            if(managers[x] == -1) {
+                manager = x;
             }
         }
 
 
-        for(int x = 0; x < adjMap.size(); x++) {
-            adjList.add((Integer[]) adjMap.get(x).toArray());
+        for(int x = 0; x < managers.length; x++) {
+            if (adjMap.containsKey(x)) {
+                Integer[] iarr = new Integer[adjMap.get(x).size()];
+                for(int y = 0 ; y < adjMap.get(x).size(); y++) {
+                    iarr[y] = adjMap.get(x).get(y);
+                }
+                adjList.add(iarr);
+            } else {
+                adjList.add(null);
+            }
         }
 
         return adjList;

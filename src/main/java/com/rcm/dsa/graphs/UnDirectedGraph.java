@@ -193,7 +193,6 @@ public class UnDirectedGraph {
         visited.add(index);
         finl.add(index);
         for(int x = 0; x < adj.length; x++) {
-            System.out.println("i ----->"+adj[x]);
             if(adj[x] == 1 && !visited.contains(x)) {
                 finl =  depthFirstSearchAdjacencyMatrix(adjMatrix, x, finl, visited);
             }

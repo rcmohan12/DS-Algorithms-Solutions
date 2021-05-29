@@ -6,10 +6,61 @@ public class NetworkTimeDelay {
 
     public static void main(String[] args) {
 
-        System.out.println("Max n/w delay ---->"+getNetworkDelay(1));
+//        System.out.println("Max n/w delay ---->"+getNetworkDelay(1));
+        System.out.println("Max n/w delay ---->"+getNetworkDelayBF(1));
 
     }
 
+    /**
+     * Bellman-Ford implementation to determine n/w time delay
+     * Time complexity --> O(N.E)
+     * Find the shortest/lowest costing path from a particular node in a graph that has negative costing edges &
+     * NO NEGATIVE LOOP, the choose BF
+     * @param startNode
+     * @return
+     */
+    public static int getNetworkDelayBF(int startNode) {
+        Map<Integer, List<NodeTime>> adjMap = getAdjMapDjk();
+        int iter = adjMap.size();
+        Map<Integer, Integer> delays = new HashMap<>();
+        for(Map.Entry<Integer, List<NodeTime>> entry : adjMap.entrySet()) {
+            if(entry.getKey() == startNode) {
+                delays.put(entry.getKey(), 0);
+            } else {
+                delays.put(entry.getKey(), Integer.MAX_VALUE);
+            }
+        }
+
+        for(int x = 0; x < iter; x++) {
+            for(Map.Entry<Integer, List<NodeTime>> entry : adjMap.entrySet()) {
+                List<NodeTime> targets = entry.getValue();
+                for(NodeTime target : targets) {
+                    int time = delays.get(entry.getKey()) + target.time;
+                    if(delays.get(entry.getKey()) != Integer.MAX_VALUE && time < delays.get(target.node)) {
+                        delays.put(target.node, time);
+                    }
+                }
+            }
+        }
+
+        int maxTime = Integer.MIN_VALUE;
+        for(Map.Entry<Integer, Integer> delay : delays.entrySet()) {
+            System.out.println("Node: "+ delay.getKey() + " Delay: "+delay.getValue());
+            maxTime = Integer.max(maxTime, delay.getValue());
+        }
+
+        return maxTime;
+
+    }
+
+
+    /**
+     * Impl of Djikistra's algorithm
+     * It performs better than BF O(N + ElogE) : N = nodes & E = edges
+     * - if we have a directed weighted graph and single source shortest/lowest costing path to all vertices then, choose Djikistras
+     * @param startNode
+     * @return
+     */
     public static int getNetworkDelay(int startNode) {
         Map<Integer, List<NodeTime>> adjMap = getAdjMap();
         int networkDelay = 0;
@@ -24,14 +75,14 @@ public class NetworkTimeDelay {
         nodeTimeMap.put(5, Integer.MAX_VALUE);
         boolean cont = true;
 
-        while (cont) {
+        while (cont) {                                   // O(n)
             if(visited.size()==adjMap.size()) {
                 cont = false;
             }
             int node = getNodeFromMap(nodeTimeMap, lowestVals);
             List<NodeTime> nodeTimes = adjMap.get(node);
             if(nodeTimes != null) {
-                for(NodeTime nt : nodeTimes) {
+                for(NodeTime nt : nodeTimes) {  //O(n)
                    if(visited.contains(node)) {
                       int newTime =  nodeTimeMap.get(node) + nt.time;
                       if(nodeTimeMap.containsKey(nt.node) && nodeTimeMap.get(nt.node) > newTime) {
@@ -55,7 +106,7 @@ public class NetworkTimeDelay {
 
     /**
      * Use this method to get the next lowest weighted node
-     *
+     * Complexity - O(n)
      * @param nodeTimeMap
      * @param lowestVals
      * @return
@@ -95,7 +146,7 @@ public class NetworkTimeDelay {
         adjMap.put(1, l1);
 
         List<NodeTime> l2 = new ArrayList<>();
-        l2.add(new NodeTime(5, 9));
+        l2.add(new NodeTime(5, -3));
         adjMap.put(2, l2);
 
         List<NodeTime> l3 = new ArrayList<>();
@@ -104,7 +155,41 @@ public class NetworkTimeDelay {
         adjMap.put(3, l3);
 
         List<NodeTime> l4 = new ArrayList<>();
-        l4.add(new NodeTime(2, 4));
+        l4.add(new NodeTime(2, -4));
+        l4.add(new NodeTime(5, 6));
+        adjMap.put(4, l4);
+
+        List<NodeTime> l5 = new ArrayList<>();
+        l5.add(new NodeTime(3, 7));
+        adjMap.put(5, l5);
+
+        return adjMap;
+    }
+
+    /**
+     * Pre construct the adj list with the delays
+     *
+     * @return
+     */
+    public static Map<Integer, List<NodeTime>> getAdjMapDjk() {
+        Map<Integer, List<NodeTime>> adjMap = new HashMap<>();
+
+        List<NodeTime> l1 = new ArrayList<>();
+        l1.add(new NodeTime(2, 9));
+        l1.add(new NodeTime(4, 2));
+        adjMap.put(1, l1);
+
+        List<NodeTime> l2 = new ArrayList<>();
+        l2.add(new NodeTime(5, -3));
+        adjMap.put(2, l2);
+
+        List<NodeTime> l3 = new ArrayList<>();
+        l3.add(new NodeTime(2, 3));
+        l3.add(new NodeTime(1, 5));
+        adjMap.put(3, l3);
+
+        List<NodeTime> l4 = new ArrayList<>();
+        l4.add(new NodeTime(2, -4));
         l4.add(new NodeTime(5, 6));
         adjMap.put(4, l4);
 

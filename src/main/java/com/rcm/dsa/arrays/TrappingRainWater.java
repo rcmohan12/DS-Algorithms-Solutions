@@ -14,6 +14,11 @@ public class TrappingRainWater {
         return optimised(stats);
     }
 
+    /**
+     * Overall time complexity = O(n2)
+     * @param stats
+     * @return
+     */
     private static int bruteForce(int[] stats) {
         int maxWater  = 0;
         int maxLeft = 0;
@@ -38,6 +43,11 @@ public class TrappingRainWater {
         return maxWater;
     }
 
+    /**
+     * Total Time complexity : O(n)
+     * @param stats
+     * @return
+     */
     private static int optimised(int[] stats) {
         int maxWater = 0;
         int p1 = 0;
